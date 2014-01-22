@@ -5,7 +5,8 @@
 ;; schemas
 (def Name s/Str)
 
-(def Goal {:for-team Name})
+(def Goal {:for-team Name
+           :scorer (s/maybe Name)})
 
 (def Player {:name Name})
 
@@ -34,5 +35,6 @@
 
 (defn goal
   "create a new instance of Goal"
-  [team]
-  {:for-team team})
+  [team & {:keys [scorer]}]
+  {:for-team team
+   :scorer scorer})

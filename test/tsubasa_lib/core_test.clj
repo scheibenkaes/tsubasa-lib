@@ -3,12 +3,20 @@
             [tsubasa-lib.core :refer :all]
             [schema.core :as s]))
 
+(def test-team-1 "test team 1")
+
 (defn obeys-schema [schema data]
-  (is (= (s/validate schema data) data)))
+  (let [valid-data (s/validate schema data)]
+    (is (= valid-data data))
+    valid-data))
 
 (deftest test-goal
   (testing "goal returns a valid Goal"
-    (obeys-schema Goal (goal "test"))))
+    (obeys-schema Goal (goal "test")))
+
+  (testing "accepts optional scorer"
+    (let [data (obeys-schema Goal (goal test-team-1 :scorer "Player1"))]
+      (is (= (-> data :scorer) "Player1")))))
 
 (deftest test-player
   (testing "player returns a valid Player"
